@@ -1,0 +1,583 @@
+#! /Applications/Nuke13.2v4/Nuke13.2v4.app/Contents/MacOS/libnuke-13.2.4.dylib -nx
+version 13.2 v4
+define_window_layout_xml {<?xml version="1.0" encoding="UTF-8"?>
+<layout version="1.0">
+    <window x="44" y="25" w="1876" h="1027" maximized="1" screen="0">
+        <splitter orientation="1">
+            <split size="40"/>
+            <dock id="" hideTitles="1" activePageId="Toolbar.1">
+                <page id="Toolbar.1"/>
+            </dock>
+            <split size="1115" stretch="1"/>
+            <splitter orientation="2">
+                <split size="846"/>
+                <dock id="" activePageId="Viewer.1">
+                    <page id="Viewer.1"/>
+                </dock>
+                <split size="161"/>
+                <dock id="" activePageId="Curve Editor.1">
+                    <page id="Curve Editor.1"/>
+                    <page id="DopeSheet.1"/>
+                    <page id="uk.co.thefoundry.scripteditor.1"/>
+                    <page id="Pixel Analyzer.1"/>
+                </dock>
+            </splitter>
+            <split size="713"/>
+            <dock id="" activePageId="DAG.1" focus="true">
+                <page id="DAG.1"/>
+            </dock>
+        </splitter>
+    </window>
+</layout>
+}
+Root {
+ inputs 0
+ name /Users/max/Desktop/Scanlines/scanlines_setup.nk
+ fps 25
+ format "2048 2048 0 0 2048 2048 1 square_2K"
+ proxy_type scale
+ proxy_format "1024 778 0 0 1024 778 1 1K_Super_35(full-ap)"
+ colorManagement Nuke
+ workingSpaceLUT linear
+ monitorLut sRGB
+ monitorOutLUT rec709
+ int8Lut sRGB
+ int16Lut sRGB
+ logLut Cineon
+ floatLut linear
+}
+Read {
+ inputs 0
+ file_type png
+ file /mario.png
+ format "256 224 0 0 256 224 1 "
+ origset true
+ name Read2
+ xpos -72
+ ypos 359
+}
+Dot {
+ name Dot51
+ note_font_size 30
+ xpos -38
+ ypos 626
+}
+set N3976b950 [stack 0]
+Dot {
+ name Dot56
+ note_font_size 30
+ xpos -591
+ ypos 626
+}
+Keyer {
+ operation "luminance key"
+ name Keyer6
+ xpos -625
+ ypos 675
+}
+Reformat {
+ type scale
+ scale 5
+ filter impulse
+ name Reformat10
+ xpos -625
+ ypos 748
+}
+FilterErode {
+ size 1.8
+ name FilterErode3
+ xpos -625
+ ypos 772
+}
+Reformat {
+ type scale
+ scale {{".2 * 4"}}
+ name Reformat11
+ xpos -625
+ ypos 804
+}
+ColorCorrect {
+ channels alpha
+ gamma 5.98
+ name ColorCorrect9
+ xpos -625
+ ypos 828
+}
+Dot {
+ name Dot57
+ note_font_size 30
+ xpos -591
+ ypos 1052
+}
+Constant {
+ inputs 0
+ channels alpha
+ color 1
+ name Constant2
+ xpos -153
+ ypos 947
+ postage_stamp false
+}
+Reformat {
+ type "to box"
+ box_width {{Reformat_hor1.width}}
+ box_height {{Reformat_hor1.height}}
+ box_fixed true
+ name Reformat12
+ xpos -153
+ ypos 979
+}
+Dot {
+ name Dot58
+ note_font_size 30
+ xpos -119
+ ypos 1052
+}
+push $N3976b950
+Reformat {
+ type scale
+ scale {1 4}
+ resize distort
+ filter impulse
+ name Reformat_vert1
+ xpos -72
+ ypos 714
+}
+Grade {
+ channels none
+ black_clamp false
+ name BREAK_CONCATENATION3
+ tile_color 0x1f8500ff
+ xpos -72
+ ypos 738
+}
+Reformat {
+ type scale
+ scale {4 1}
+ resize distort
+ name Reformat_hor1
+ xpos -72
+ ypos 770
+}
+Dot {
+ name Dot52
+ note_font_size 30
+ xpos -38
+ ypos 848
+}
+set N39783f30 [stack 0]
+Dot {
+ name Dot59
+ note_font_size 30
+ xpos -224
+ ypos 848
+}
+Expression {
+ temp_name0 hRepeats
+ temp_expr0 width/Reformat_pixel_sprite.width
+ temp_name1 vRepeats
+ temp_expr1 height/Reformat_pixel_sprite.height
+ expr0 ((x+.5)/width)*hRepeats%1
+ expr1 ((y+.5)/height)*vRepeats%1
+ expr2 0
+ name Expression_repeater4
+ xpos -258
+ ypos 888
+}
+Reformat {
+ inputs 0
+ type "to box"
+ box_width 4
+ box_height 4
+ box_fixed true
+ black_outside true
+ name Reformat_pixel_sprite1
+ xpos -413
+ ypos 779
+}
+Rectangle {
+ output alpha
+ area {0 0 {width} {height}}
+ softness 0.55
+ name Rectangle2
+ xpos -413
+ ypos 803
+}
+ColorCorrect {
+ channels alpha
+ contrast 1.84
+ gamma 0.2
+ gain 0.002
+ mix 0.56
+ name ColorCorrect10
+ xpos -413
+ ypos 872
+}
+Dot {
+ name Dot60
+ note_font_size 30
+ xpos -379
+ ypos 953
+}
+STMap {
+ inputs 2
+ channels alpha
+ uv rgb
+ filter impulse
+ name STMap3
+ xpos -258
+ ypos 946
+}
+Transform {
+ translate {0.5 0}
+ center {512 448}
+ shutteroffset centred
+ name Transform7
+ xpos -258
+ ypos 978
+}
+Dissolve {
+ inputs 2+1
+ channels alpha
+ which 1
+ name Dissolve8
+ xpos -258
+ ypos 1045
+}
+Shuffle2 {
+ fromInput1 {{0} B}
+ fromInput2 {{0} B}
+ mappings "4 black -1 -1 rgba.alpha 0 3 rgba.alpha 0 3 rgba.blue 0 2 rgba.alpha 0 3 rgba.green 0 1 rgba.alpha 0 3 rgba.red 0 0"
+ name Shuffle11
+ label "\[value in] -> \[value out]"
+ xpos -258
+ ypos 1106
+}
+Dot {
+ name Dot61
+ note_font_size 30
+ xpos -224
+ ypos 1162
+}
+push $N39783f30
+Dot {
+ name Dot53
+ note_font_size 30
+ xpos 72
+ ypos 848
+}
+Expression {
+ temp_name0 repeats
+ temp_expr0 height/Reformat_scanline_sprite.height
+ expr0 (x+.5)/width
+ expr1 ((y+.5)/height)*repeats%1
+ expr2 0
+ name Expression_repeater5
+ xpos 38
+ ypos 915
+}
+Reformat {
+ inputs 0
+ type "to box"
+ box_width 1
+ box_height 4
+ box_fixed true
+ name Reformat_scanline_sprite
+ xpos 186
+ ypos 856
+}
+Expression {
+ expr0 1
+ expr1 1
+ expr2 1
+ expr3 "y==0 ? 1 : y==1 ? .5 : 0"
+ name Expression_scanline_pattern
+ xpos 186
+ ypos 880
+}
+Dot {
+ name Dot62
+ note_font_size 30
+ xpos 220
+ ypos 946
+}
+STMap {
+ inputs 2
+ channels alpha
+ uv rgb
+ filter impulse
+ name STMap4
+ xpos 38
+ ypos 939
+}
+Crop {
+ box {0 0 {width} {height}}
+ crop false
+ name Crop13
+ xpos 38
+ ypos 971
+}
+Premult {
+ name Premult5
+ xpos 38
+ ypos 995
+}
+Dot {
+ name Dot63
+ note_font_size 30
+ xpos 72
+ ypos 1138
+}
+push $N39783f30
+Merge2 {
+ inputs 2
+ operation soft-light
+ name Merge10
+ xpos -72
+ ypos 1135
+}
+Merge2 {
+ inputs 2
+ operation multiply
+ bbox B
+ name Merge11
+ xpos -72
+ ypos 1159
+}
+ColorCorrect {
+ gamma 0.83
+ gain 1.54
+ name ColorCorrect11
+ xpos -72
+ ypos 1182
+}
+Dot {
+ name Dot64
+ note_font_size 30
+ xpos -38
+ ypos 1232
+}
+set N3a4b6580 [stack 0]
+Dot {
+ name Dot65
+ note_font_size 30
+ xpos -135
+ ypos 1232
+}
+Dot {
+ name Dot66
+ note_font_size 30
+ xpos -135
+ ypos 1316
+}
+push $N3a4b6580
+Grain2 {
+ name Grain2_2
+ label "Kodak 5248"
+ xpos -72
+ ypos 1277
+ red_size 4
+ green_size 4
+ blue_size 4
+ black {0 0 0}
+ minimum {0 0 0}
+ maskgrain false
+}
+Dissolve {
+ inputs 2
+ which 0.4
+ name Dissolve9
+ xpos -72
+ ypos 1309
+}
+Dot {
+ name Dot67
+ note_font_size 30
+ xpos -38
+ ypos 1507
+}
+set N19210e70 [stack 0]
+Shuffle2 {
+ fromInput1 {{0} B}
+ fromInput2 {{0} B}
+ mappings "4 rgba.red 0 0 rgba.red 0 0 black -1 -1 rgba.green 0 1 black -1 -1 rgba.blue 0 2 black -1 -1 rgba.alpha 0 3"
+ name Shuffle13
+ label "\[value in] -> \[value out]"
+ xpos -252
+ ypos 1560
+}
+Dot {
+ name Dot68
+ note_font_size 30
+ xpos -218
+ ypos 1614
+}
+set N19217f60 [stack 0]
+Dot {
+ name Dot69
+ note_font_size 30
+ xpos -298
+ ypos 1614
+}
+Dot {
+ name Dot70
+ xpos -298
+ ypos 1694
+}
+push $N19217f60
+Blur {
+ size {4.4 2}
+ name Blur8
+ xpos -252
+ ypos 1655
+}
+Dissolve {
+ inputs 2
+ which 0.5
+ name Dissolve10
+ xpos -252
+ ypos 1687
+}
+Dot {
+ name Dot71
+ note_font_size 30
+ xpos -218
+ ypos 1917
+}
+push $N19210e70
+Shuffle2 {
+ fromInput1 {{0} B}
+ fromInput2 {{0} B}
+ mappings "4 black -1 -1 rgba.red 0 0 black -1 -1 rgba.blue 0 2 black -1 -1 rgba.alpha 0 3 rgba.green 0 1 rgba.green 0 1"
+ name Shuffle14
+ label "\[value in] -> \[value out]"
+ xpos -72
+ ypos 1561
+}
+Dot {
+ name Dot72
+ note_font_size 30
+ xpos -38
+ ypos 1620
+}
+set N19232530 [stack 0]
+Dot {
+ name Dot73
+ note_font_size 30
+ xpos -118
+ ypos 1620
+}
+Dot {
+ name Dot74
+ xpos -118
+ ypos 1700
+}
+push $N19232530
+Blur {
+ size {6.2 2}
+ name Blur9
+ xpos -72
+ ypos 1661
+}
+Dissolve {
+ inputs 2
+ which 0.7
+ name Dissolve11
+ xpos -72
+ ypos 1693
+}
+Transform {
+ translate {2 0}
+ center {512 448}
+ black_outside false
+ shutteroffset centred
+ name Transform8
+ xpos -72
+ ypos 1746
+}
+push $N19210e70
+Shuffle2 {
+ fromInput1 {{0} B}
+ fromInput2 {{0} B}
+ mappings "4 black -1 -1 rgba.red 0 0 black -1 -1 rgba.alpha 0 3 black -1 -1 rgba.green 0 1 rgba.blue 0 2 rgba.blue 0 2"
+ name Shuffle15
+ label "\[value in] -> \[value out]"
+ xpos 87
+ ypos 1561
+}
+Dot {
+ name Dot75
+ note_font_size 30
+ xpos 121
+ ypos 1624
+}
+set N19250060 [stack 0]
+Dot {
+ name Dot76
+ note_font_size 30
+ xpos 41
+ ypos 1624
+}
+Dot {
+ name Dot77
+ xpos 41
+ ypos 1704
+}
+push $N19250060
+Blur {
+ size {10 2}
+ name Blur10
+ xpos 87
+ ypos 1665
+}
+Dissolve {
+ inputs 2
+ which 0.56
+ name Dissolve12
+ xpos 87
+ ypos 1697
+}
+Dot {
+ name Dot78
+ xpos 121
+ ypos 1807
+}
+Shuffle2 {
+ inputs 2
+ fromInput1 {{0} B A}
+ fromInput2 {{1} B A}
+ in2 rgba
+ mappings "4 black -1 -1 rgba.red 0 0 rgba.blue 0 2 rgba.blue 0 2 black -1 -1 rgba.alpha 0 3 rgba.green 1 1 rgba.green 0 1"
+ name Shuffle16
+ label "\[value in] -> \[value out]"
+ xpos -72
+ ypos 1800
+}
+Shuffle2 {
+ inputs 2
+ fromInput1 {{0} B A}
+ fromInput2 {{1} B A}
+ in2 rgba
+ mappings "4 rgba.blue 0 2 rgba.blue 0 2 black -1 -1 rgba.alpha 0 3 rgba.red 1 0 rgba.red 0 0 rgba.green 0 1 rgba.green 0 1"
+ name Shuffle17
+ label "\[value in] -> \[value out]"
+ xpos -72
+ ypos 1910
+}
+Crop {
+ box {0 0 1024 896}
+ crop false
+ name Crop1
+ xpos -72
+ ypos 2008
+}
+Viewer {
+ frame 1
+ frame_range 1-100
+ fps 25
+ colour_sample_bbox {0.625 -0.234375 0.6328125 -0.2265625}
+ monitorOutOutputTransform rec709
+ name Viewer1
+ xpos -72
+ ypos 2088
+}
