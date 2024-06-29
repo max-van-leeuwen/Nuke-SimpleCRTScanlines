@@ -1,4 +1,4 @@
-# Two Images Side by Side
+# CRT Scanlines from Pixel Art - using Nuke
 
 Small setup that renders pixel art as if on a CRT display, with wireframes. May need a bit of tweaking for different input image sizes.
 
